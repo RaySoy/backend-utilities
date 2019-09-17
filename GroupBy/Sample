@@ -1,0 +1,72 @@
+class Program 
+{
+  static void Main(string[] args)
+  {
+    var lstArtists = new List<Artist>();
+    lstArtists.Add(new Artist() { Name = "SampleName1" });
+    lstArtists.Add(new Artist() { Name = "SampleName1" });
+    lstArtists.Add(new Artist() { Name = "SampleName1" });
+    lstArtists.Add(new Artist() { Name = "SampleName1" });
+    lstArtists.Add(new Artist() { Name = "SampleName2" });
+    lstArtists.Add(new Artist() { Name = "SampleName2" });
+    var resultGrouping = lstArtists.GroupBy(obj_artist => obj_artist, new ArtistCustomComparer()).ToList();
+    
+    return true;
+  }
+}
+
+public class Artist
+{
+  public string Name { get; set; }
+  public string Surname { get; set; }
+  public string Age { get; set; }
+  public string Weight { get; set; }
+  public string Height { get; set; }
+  public List<Album> ListAlbum { get; set; }
+}
+
+public class ArtistCustomComparer : IEqualityComparer<Artist>
+{
+  public bool Equals(Artist a, Artist b)
+  {
+      //On the GroupBy this is triggered when the hashcode is equal
+      return a.Name == b.Name && a.Surname == b.Surname && a.Album.Count == b.Album.Count;
+  }
+
+  public int GetHashCode(Artist a)
+  {
+      int hash = 17;
+
+      hash = hash * 23 + a.Name.GetHashCode() + a.Surname.GetHashCode();
+
+      foreach (var album in a.ListAlbum)
+      {
+          hash = hash * 31 + album.GetHashCode();
+      }
+
+      return hash;
+  }
+}
+
+public class Album
+{
+  public string Title { get; set; }
+  public string SubTitle { get; set; }
+  public decimal? Price { get; set; }
+  public string RecordDate { get; set; }
+  public string Copyright { get; set; }
+  
+  public override int GetHashCode()
+  {
+      int hash = 17;
+
+      hash = hash * 23 + this.Title.GetHashCode() + this.Price.GetHashCode();
+
+      return hash;
+  }
+  public override bool Equals(object a)
+  {
+      return string.Equals(typeof(Album).GetProperty("Title").GetValue(a), this.Title)
+              && ((typeof(Album).GetProperty("Price").GetValue(a) == null) ? new decimal?() : Convert.ToDecimal(typeof(Album).GetProperty("Price").GetValue(a))) == this.Price;
+  }
+}
