@@ -36,9 +36,7 @@ public class ArtistCustomComparer : IEqualityComparer<Artist>
   public int GetHashCode(Artist a)
   {
       int hash = 17;
-
       hash = hash * 23 + a.Name.GetHashCode() + a.Surname.GetHashCode();
-
       foreach (var album in a.ListAlbum)
       {
           hash = hash * 31 + album.GetHashCode();
@@ -59,9 +57,7 @@ public class Album
   public override int GetHashCode()
   {
       int hash = 17;
-
       hash = hash * 23 + this.Title.GetHashCode() + this.Price.GetHashCode();
-
       return hash;
   }
   public override bool Equals(object a)
