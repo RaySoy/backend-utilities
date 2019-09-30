@@ -1,4 +1,4 @@
-public static List<DateTime> Splitter(DateTime fromDate, DateTime toDate, int Frequency)
+public static List<DateTime> Splitter(DateTime fromDate, DateTime toDate, int Frequency, bool toDateLimitInclude = true)
         {
             try
             {
@@ -14,6 +14,11 @@ public static List<DateTime> Splitter(DateTime fromDate, DateTime toDate, int Fr
                     if (toDateTemp > toDateLimit)
                         toDateTemp = toDateLimit;
                     fromDateTemp = toDateTemp.AddDays(1);
+                }
+
+                if(toDateLimitInclude == false)
+                {
+                    resultList.Add(toDateLimit);
                 }
 
                 return resultList;
