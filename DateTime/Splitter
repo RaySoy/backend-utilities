@@ -1,0 +1,25 @@
+public static List<DateTime> Splitter(DateTime fromDate, DateTime toDate, int Frequency)
+        {
+            try
+            {
+                List<DateTime> resultList = new List<DateTime>();
+                DateTime fromDateTemp = fromDate;
+                DateTime toDateTemp = fromDateTemp;
+                DateTime toDateLimit = toDate;
+
+                while (toDateTemp <= toDateLimit)
+                {
+                    resultList.Add(fromDateTemp);
+                    toDateTemp = toDateTemp.AddDays(Frequency);
+                    if (toDateTemp > toDateLimit)
+                        toDateTemp = toDateLimit;
+                    fromDateTemp = toDateTemp.AddDays(1);
+                }
+
+                return resultList;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
