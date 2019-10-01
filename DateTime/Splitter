@@ -1,24 +1,50 @@
-public static List<DateTime> Splitter(DateTime fromDate, DateTime toDate, int Frequency, bool toDateLimitInclude = true)
+public class DateTimeUtilities
+    {
+        public int ErrorCode;
+        public string ErrorMessage;
+        
+        public DateTimeUtilities()
+        {
+            ErrorCode = 0;
+            ErrorMessage = string.Empty;
+        }
+        
+        /// <summary>
+        /// Range of dates splitter.
+        /// </summary>
+        /// <returns></returns>
+        public List<DateTime> Splitter(DateTime fromDate, DateTime toDate, int Frequency, bool includeLimit = true)
         {
             try
             {
                 List<DateTime> resultList = new List<DateTime>();
-                DateTime fromDateTemp = fromDate;
-                DateTime toDateTemp = fromDateTemp;
-                DateTime toDateLimit = toDate;
 
-                while (toDateTemp <= toDateLimit)
+                if (fromDate > toDate)
                 {
-                    resultList.Add(fromDateTemp);
-                    toDateTemp = toDateTemp.AddDays(Frequency);
-                    if (toDateTemp > toDateLimit)
-                        toDateTemp = toDateLimit;
-                    fromDateTemp = toDateTemp.AddDays(1);
+                    ErrorCode = -1;
+                    ErrorMessage = "Date range inconsistent.";
+                    return resultList;
+                }
+                if (Frequency <= 0)
+                {
+                    ErrorCode = -2;
+                    ErrorMessage = "Wrong frequency.";
+                    return resultList;
                 }
 
-                if(toDateLimitInclude == false)
+
+                DateTime innerFromDate = fromDate;
+
+                do
                 {
-                    resultList.Add(toDateLimit);
+                    resultList.Add(innerFromDate);
+                    innerFromDate = innerFromDate.AddDays(Frequency);
+                }
+                while (innerFromDate < toDate);
+
+                if (includeLimit == true)
+                {
+                    resultList.Add(toDate);
                 }
 
                 return resultList;
@@ -28,3 +54,4 @@ public static List<DateTime> Splitter(DateTime fromDate, DateTime toDate, int Fr
                 throw ex;
             }
         }
+    }
