@@ -1,0 +1,24 @@
+//DON'T USE IT FOR WEB REQUESTS
+            //ONLY FOR CPU ITERATIONS
+            //USE IT WITHOUT ASYNC INSIDE
+            //WITH ASYNC IN SOME CASES THE FINAL RESPONSE DON'T HAVE ALL THE RECORDS
+            Parallel.ForEach(treeNodes.Where(obj_nodes =>
+                                                obj_nodes.NodeLevel == level &&
+                                                obj_nodes.NodeGroup == nestedGroup),
+                                            node =>
+                                            {
+                                                treeNodesResponse.Add(new TreeNodeDTO()
+                                                {
+                                                    Description = node.Description,
+                                                    IsExpanded = false,
+                                                    Order = node.Ordinamento,
+                                                    Field = node.Field,
+                                                    Children = node.Expandable == false ? null :
+                                                                                            GetTreeNodes(
+                                                                                                treeNodes: treeNodes,
+                                                                                                level: level + 1,
+                                                                                                nestedGroup: node.Nested_NodeGroup
+                                                                                            )
+                                                });
+                                            }
+            );
