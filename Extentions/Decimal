@@ -1,0 +1,8 @@
+public static class DecimalExtensions
+    {
+        public static decimal RoundDefault(this decimal num)
+            => Math.Round(num, 2, MidpointRounding.AwayFromZero);
+
+        public static decimal RoundRest(this decimal num)
+            => num.RoundDefault() - num;
+    }
