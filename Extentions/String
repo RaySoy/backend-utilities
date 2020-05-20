@@ -1,0 +1,5 @@
+ public static class StringExtensions
+  {
+      public static string RemoveWhitespaces(this string str)
+          => Regex.Replace(str, @"\s+", "");
+  }
